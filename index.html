@@ -1,423 +1,700 @@
-<!DOCTYPE html>
-<html lang="en">
+DOCTYPE html>
+<htm<!l lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mood & Food — Tamil Nadu</title>
+<title>Mood and Food - Tamil Nadu</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;}
-  :root{--primary:#e07020;--primary-light:#fff3e8;--card:#ffffff;--bg:#fff7f0;--muted:#888;--border:#f0d8c0;--text:#1a1a1a;--radius:18px;}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#fff7f0 0%,#ffe8d6 100%);min-height:100vh;color:var(--text);padding:16px;}
-  .screen{display:none;} .screen.active{display:block;}
-  .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.08);max-width:600px;margin:0 auto;overflow:hidden;}
-  .card-header{text-align:center;padding:28px 24px 16px;}
-  .card-header h1{font-size:28px;font-weight:800;color:var(--primary);}
-  .card-header p{color:var(--muted);margin-top:6px;font-size:15px;line-height:1.5;}
-  .card-body{padding:0 24px 28px;}
-  .landing-wrap{max-width:500px;margin:60px auto 0;text-align:center;}
-  .landing-wrap .emoji{font-size:64px;display:block;margin-bottom:12px;}
-  .landing-wrap h1{font-size:36px;font-weight:900;color:var(--primary);}
-  .landing-wrap p{color:var(--muted);font-size:16px;line-height:1.6;margin:12px 0 28px;}
-  .btn{width:100%;padding:14px 20px;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;transition:opacity 0.15s,transform 0.1s;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;}
-  .btn:hover{opacity:0.88;} .btn:active{transform:scale(0.97);}
-  .btn-primary{background:var(--primary);color:#fff;}
-  .btn-ghost{background:transparent;color:var(--muted);font-size:14px;width:auto;padding:10px 16px;}
-  .btn-swiggy{background:#FC8019;color:#fff;}
-  .btn-zomato{background:#E23744;color:#fff;}
-  .btn-whatsapp{background:#25D366;color:#fff;font-size:14px;padding:10px 16px;}
-  .btn-row{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
-  .btn-badge{width:26px;height:26px;border-radius:50%;background:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .btn-swiggy .btn-badge{color:#FC8019;} .btn-zomato .btn-badge{color:#E23744;}
-  .field{margin-bottom:18px;}
-  .field label{display:block;font-weight:600;margin-bottom:6px;font-size:15px;}
-  .field input{width:100%;padding:13px 16px;border:2px solid var(--border);border-radius:12px;font-size:15px;outline:none;transition:border 0.2s;}
-  .field input:focus{border-color:var(--primary);}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .pick-btn{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:14px 12px;text-align:left;cursor:pointer;transition:all 0.15s;font-size:13px;}
-  .pick-btn:hover{border-color:rgba(224,112,32,0.4);}
-  .pick-btn.selected{border-color:var(--primary);background:var(--primary-light);transform:scale(1.02);}
-  .pick-btn .icon{font-size:22px;margin-bottom:4px;}
-  .pick-btn .title{font-weight:700;font-size:13px;line-height:1.3;}
-  .pick-btn .sub{color:var(--muted);font-size:11px;margin-top:2px;}
-  .section-title{font-size:17px;font-weight:700;margin-bottom:10px;margin-top:6px;}
-  .section-sub{color:var(--muted);font-size:12px;margin-top:-6px;margin-bottom:10px;}
-  .mood-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
-  .mood-pill{display:flex;flex-direction:column;align-items:center;padding:12px 16px;border-radius:14px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all 0.15s;font-size:13px;font-weight:600;min-width:70px;}
-  .mood-pill .em{font-size:32px;margin-bottom:4px;}
-  .mood-pill:hover{border-color:rgba(224,112,32,0.4);}
-  .mood-pill.selected{border-color:var(--primary);background:var(--primary-light);transform:scale(1.08);}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
-  .chip{padding:10px 18px;border-radius:99px;border:2px solid var(--border);background:var(--card);cursor:pointer;font-size:14px;font-weight:600;transition:all 0.15s;}
-  .chip:hover{border-color:rgba(224,112,32,0.4);}
-  .chip.selected{background:var(--primary);color:#fff;border-color:var(--primary);}
-  .divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
-  .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
-  .food-list{display:flex;flex-direction:column;gap:16px;margin-top:4px;}
-  .food-card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 3px 12px rgba(0,0,0,0.06);overflow:hidden;}
-  .food-card .fc-info{padding:16px 16px 12px;}
-  .food-card .fc-name{font-size:17px;font-weight:800;}
-  .food-card .fc-tamil{font-size:13px;color:var(--primary);font-weight:700;margin-top:2px;}
-  .food-card .fc-desc{font-size:13px;color:var(--muted);margin-top:5px;line-height:1.5;}
-  .food-card .fc-why{background:var(--primary-light);border-radius:10px;padding:8px 12px;margin-top:10px;font-size:12px;color:#555;line-height:1.5;}
-  .food-card .fc-why strong{color:var(--primary);}
-  .food-card .fc-btns{padding:0 16px 16px;}
-  .result-hdr{text-align:center;padding:20px 24px 8px;}
-  .result-hdr h2{font-size:20px;font-weight:800;color:var(--primary);}
-  .result-hdr p{font-size:13px;color:var(--muted);margin-top:4px;}
-  .recs-scroll{max-height:80vh;overflow-y:auto;padding:0 16px 16px;}
-  .lang-toggle{position:fixed;top:12px;right:12px;z-index:999;background:var(--primary);color:#fff;border:none;border-radius:99px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;}
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --orange:#e07020;
+  --orange-light:#fff3e8;
+  --white:#ffffff;
+  --bg-start:#fff7f0;
+  --bg-end:#ffe8d6;
+  --grey:#888;
+  --border:#f0d8c0;
+  --dark:#1a1a1a;
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;
+  background:linear-gradient(135deg,var(--bg-start),var(--bg-end));
+  min-height:100vh;
+  color:var(--dark);
+  padding:16px;
+}
+
+/* SCREENS */
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* LANG BUTTON */
+#lang-btn{
+  position:fixed;top:12px;right:12px;z-index:999;
+  background:var(--orange);color:#fff;
+  border:none;border-radius:99px;
+  padding:8px 16px;font-size:13px;font-weight:700;
+  cursor:pointer;
+}
+
+/* LANDING */
+.land{max-width:480px;margin:50px auto 0;text-align:center;}
+.land .big-icon{font-size:72px;display:block;margin-bottom:16px;}
+.land h1{font-size:38px;font-weight:900;color:var(--orange);}
+.land p{color:var(--grey);font-size:16px;line-height:1.6;margin:12px 0 28px;}
+
+/* CARD */
+.card{
+  background:#fff;
+  border-radius:18px;
+  border:1px solid var(--border);
+  box-shadow:0 8px 32px rgba(0,0,0,0.09);
+  max-width:580px;
+  margin:0 auto;
+  overflow:hidden;
+}
+.card-top{text-align:center;padding:28px 24px 14px;}
+.card-top h2{font-size:26px;font-weight:800;color:var(--orange);}
+.card-top p{color:var(--grey);margin-top:6px;font-size:15px;}
+.card-body{padding:4px 24px 28px;}
+
+/* FORM */
+.field{margin-bottom:18px;}
+.field label{display:block;font-weight:600;margin-bottom:6px;font-size:15px;}
+.field input{
+  width:100%;padding:13px 16px;
+  border:2px solid var(--border);
+  border-radius:12px;font-size:15px;
+  outline:none;transition:border .2s;
+}
+.field input:focus{border-color:var(--orange);}
+
+/* BUTTONS */
+.btn{
+  width:100%;padding:14px 20px;
+  border:none;border-radius:14px;
+  font-size:16px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  text-decoration:none;transition:opacity .15s,transform .1s;
+}
+.btn:hover{opacity:.88;}
+.btn:active{transform:scale(.97);}
+.btn-orange{background:var(--orange);color:#fff;}
+.btn-ghost{background:transparent;color:var(--grey);font-size:14px;width:auto;padding:10px 16px;border:none;cursor:pointer;}
+.btn-swiggy{background:#FC8019;color:#fff;}
+.btn-zomato{background:#E23744;color:#fff;}
+.btn-whatsapp{background:#25D366;color:#fff;font-size:14px;padding:11px 16px;}
+.btn-stack{display:flex;flex-direction:column;gap:9px;margin-top:12px;}
+.badge{
+  width:26px;height:26px;border-radius:50%;
+  background:#fff;font-size:11px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.btn-swiggy .badge{color:#FC8019;}
+.btn-zomato .badge{color:#E23744;}
+
+/* GRID 2 COLS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* PICK BUTTONS (songs / questions) */
+.pick{
+  background:#fff;border:2px solid var(--border);
+  border-radius:14px;padding:14px 12px;
+  text-align:left;cursor:pointer;transition:all .15s;
+}
+.pick:hover{border-color:rgba(224,112,32,.4);}
+.pick.sel{border-color:var(--orange);background:var(--orange-light);transform:scale(1.02);}
+.pick .ico{font-size:22px;margin-bottom:4px;}
+.pick .ttl{font-weight:700;font-size:13px;line-height:1.3;}
+.pick .sub{color:var(--grey);font-size:11px;margin-top:2px;}
+
+/* SECTION TITLES */
+.sec{font-size:17px;font-weight:700;margin:20px 0 10px;}
+.sec-sub{color:var(--grey);font-size:12px;margin:-6px 0 10px;}
+
+/* MOOD PILLS */
+.mood-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
+.mood-pill{
+  display:flex;flex-direction:column;align-items:center;
+  padding:12px 14px;border-radius:14px;
+  border:2px solid var(--border);background:#fff;
+  cursor:pointer;transition:all .15s;
+  font-size:13px;font-weight:600;min-width:68px;
+}
+.mood-pill .em{font-size:32px;margin-bottom:4px;}
+.mood-pill:hover{border-color:rgba(224,112,32,.4);}
+.mood-pill.sel{border-color:var(--orange);background:var(--orange-light);transform:scale(1.08);}
+
+/* HEALTH CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.chip{
+  padding:10px 18px;border-radius:99px;
+  border:2px solid var(--border);background:#fff;
+  cursor:pointer;font-size:14px;font-weight:600;transition:all .15s;
+}
+.chip:hover{border-color:rgba(224,112,32,.4);}
+.chip.sel{background:var(--orange);color:#fff;border-color:var(--orange);}
+
+/* DIVIDER */
+.hr{border:none;border-top:1px solid var(--border);margin:20px 0;}
+
+/* NAV ROW */
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px;}
+
+/* RESULT HEADER */
+.res-hdr{text-align:center;padding:18px 20px 8px;max-width:580px;margin:0 auto;}
+.res-hdr h2{font-size:20px;font-weight:800;color:var(--orange);}
+.res-hdr p{font-size:13px;color:var(--grey);margin-top:4px;}
+
+/* FOOD CARDS */
+.food-list{display:flex;flex-direction:column;gap:16px;max-width:580px;margin:0 auto;padding:0 0 20px;}
+.fc{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 3px 12px rgba(0,0,0,.06);overflow:hidden;}
+.fc-info{padding:16px 16px 10px;}
+.fc-name{font-size:17px;font-weight:800;}
+.fc-tamil{font-size:13px;color:var(--orange);font-weight:700;margin-top:2px;}
+.fc-desc{font-size:13px;color:var(--grey);margin-top:5px;line-height:1.5;}
+.fc-why{
+  background:var(--orange-light);border-radius:10px;
+  padding:8px 12px;margin-top:10px;
+  font-size:12px;color:#555;line-height:1.5;
+}
+.fc-why strong{color:var(--orange);}
+.fc-btns{padding:4px 16px 16px;}
+
+/* SCROLL WRAPPER */
+.scroll-wrap{max-height:82vh;overflow-y:auto;}
+
+@media(max-width:400px){
+  .land h1{font-size:28px;}
+  .g2{grid-template-columns:1fr 1fr;}
+}
 </style>
 </head>
 <body>
 
-<button class="lang-toggle" onclick="toggleLang()" id="lang-btn">தமிழ்</button>
+<!-- Language toggle button -->
+<button id="lang-btn" onclick="switchLang()">தமிழ்</button>
 
-<!-- SCREEN 0 — LANDING -->
+<!-- ===== SCREEN 0: LANDING ===== -->
 <div id="s0" class="screen active">
-  <div class="landing-wrap">
-    <span class="emoji">🍽️</span>
+  <div class="land">
+    <span class="big-icon">🍽️</span>
     <h1>Mood &amp; Food</h1>
-    <p id="l-tagline">Discover Tamil Nadu food that matches how you feel — and order it on Swiggy or Zomato in one tap.</p>
-    <div style="display:flex;flex-direction:column;gap:12px;max-width:400px;margin:0 auto;">
-      <button class="btn btn-primary" onclick="goto(1)" id="l-start">Get Started</button>
+    <p id="l-tag">Discover Tamil Nadu food that matches how you feel. Order on Swiggy or Zomato in one tap.</p>
+    <div style="max-width:380px;margin:0 auto;display:flex;flex-direction:column;gap:12px;">
+      <button class="btn btn-orange" id="l-start" onclick="go(1)">Get Started</button>
     </div>
-    <p style="margin-top:14px;font-size:12px;color:var(--muted)" id="l-note">No login needed · Free to use</p>
+    <p style="margin-top:14px;font-size:12px;color:var(--grey)" id="l-note">No login needed &middot; Free to use</p>
   </div>
 </div>
 
-<!-- SCREEN 1 — PROFILE -->
+<!-- ===== SCREEN 1: PROFILE ===== -->
 <div id="s1" class="screen">
-  <div class="card">
-    <div class="card-header">
-      <h1 id="p-title">Welcome to Mood &amp; Food</h1>
-      <p id="p-sub">Let's find the perfect meal for how you feel today.</p>
+  <div class="card" style="margin-top:20px;">
+    <div class="card-top">
+      <h2 id="p-h">Welcome to Mood &amp; Food</h2>
+      <p id="p-sub">Tell us a little about yourself.</p>
     </div>
     <div class="card-body">
-      <div class="field"><label id="p-lname">What's your name? *</label><input id="inp-name" type="text" placeholder="e.g. Priya" oninput="checkProfile()"/></div>
-      <div class="field"><label id="p-lage">Age or Date of Birth (Optional)</label><input id="inp-age" type="text" placeholder="e.g. 28 or 15/06/1995"/></div>
-      <div class="field"><label id="p-lcontact">Contact Number (Optional)</label><input id="inp-contact" type="tel" placeholder="e.g. +91 98765 43210"/></div>
-      <button id="btn-profile-next" class="btn btn-primary" onclick="saveProfile()" disabled>Let's Begin →</button>
+      <div class="field">
+        <label id="p-ln">What is your name? *</label>
+        <input id="inp-name" type="text" placeholder="e.g. Priya" oninput="chkP()"/>
+      </div>
+      <div class="field">
+        <label id="p-la">Age or Date of Birth (Optional)</label>
+        <input id="inp-age" type="text" placeholder="e.g. 28 or 15/06/1995"/>
+      </div>
+      <div class="field">
+        <label id="p-lc">Contact Number (Optional)</label>
+        <input id="inp-contact" type="tel" placeholder="e.g. +91 98765 43210"/>
+      </div>
+      <button id="btn-p" class="btn btn-orange" onclick="saveP()" disabled id="p-btn">Let's Begin</button>
     </div>
   </div>
 </div>
 
-<!-- SCREEN 2 — MOOD DISCOVERY -->
+<!-- ===== SCREEN 2: MOOD DISCOVERY ===== -->
 <div id="s2" class="screen">
-  <div class="card">
-    <div class="card-header">
-      <h1 id="s2-title">Hi, friend!</h1>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-top">
+      <h2 id="s2-h">Hi, friend!</h2>
       <p id="s2-sub">Let's find out how you feel today.</p>
     </div>
-    <div class="card-body">
-      <div class="section-title" id="s2-song-title">1. Which Tamil song matches your mood today?</div>
-      <div class="section-sub" id="s2-song-sub">Tap a song to select it</div>
-      <div class="grid2" id="song-grid"></div>
-      <div id="questions-area" style="margin-top:24px;"></div>
-      <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goto(1)" id="s2-back">← Back</button>
-        <button id="btn-disc-next" class="btn btn-primary" style="width:auto;padding:12px 28px;" onclick="goto(3)" disabled id="s2-cont">Continue →</button>
+    <div class="card-body scroll-wrap">
+      <div class="sec" id="s2-st">1. Which Tamil song matches your mood today?</div>
+      <div class="sec-sub" id="s2-ss">Tap a song to select it</div>
+      <div class="g2" id="song-grid"></div>
+      <div id="q-area"></div>
+      <div class="nav">
+        <button class="btn-ghost" id="s2-bk" onclick="go(1)">← Back</button>
+        <button id="btn-d" class="btn btn-orange" style="width:auto;padding:12px 28px;" onclick="go(3)" disabled id="s2-ct">Continue →</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SCREEN 3 — HEALTH CHECK -->
+<!-- ===== SCREEN 3: HEALTH CHECK ===== -->
 <div id="s3" class="screen">
-  <div class="card">
-    <div class="card-header">
-      <h1 id="s3-title">Confirm Your State</h1>
-      <p id="s3-subtitle">We guessed something, but you can change it!</p>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-top">
+      <h2 id="s3-h">Confirm Your State</h2>
+      <p id="s3-sub">We guessed your mood. Confirm or change it below.</p>
     </div>
     <div class="card-body">
-      <div class="section-title" style="text-align:center" id="s3-mood-q">How are you feeling right now?</div>
+      <div class="sec" style="text-align:center" id="s3-mq">How are you feeling right now?</div>
       <div class="mood-row" id="mood-row"></div>
-      <hr class="divider"/>
-      <div class="section-title" style="text-align:center" id="s3-health-q">Any health conditions to consider?</div>
+      <div class="hr"></div>
+      <div class="sec" style="text-align:center" id="s3-hq">Any health conditions to consider?</div>
       <div class="chips" id="health-chips"></div>
-      <div class="nav-row">
-        <button class="btn btn-ghost" onclick="goto(2)" id="s3-back">← Back</button>
-        <button id="btn-health-next" class="btn btn-primary" style="width:auto;padding:12px 28px;" onclick="showRecommendations()" disabled id="s3-cont">See My Food →</button>
+      <div class="nav">
+        <button class="btn-ghost" id="s3-bk" onclick="go(2)">← Back</button>
+        <button id="btn-h" class="btn btn-orange" style="width:auto;padding:12px 28px;" onclick="showFood()" disabled>See My Food →</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SCREEN 4 — RECOMMENDATIONS -->
+<!-- ===== SCREEN 4: RECOMMENDATIONS ===== -->
 <div id="s4" class="screen">
-  <div style="max-width:600px;margin:0 auto;">
-    <div class="result-hdr">
-      <h2 id="s4-title">இதோ உங்களுக்கான சாப்பாடு!</h2>
-      <p id="s4-sub"></p>
-    </div>
-    <div class="recs-scroll">
-      <div class="food-list" id="food-list"></div>
-      <div style="text-align:center;margin-top:16px;">
-        <button class="btn btn-ghost" onclick="restart()" id="s4-restart">↩ Start Over</button>
-      </div>
-    </div>
+  <div class="res-hdr">
+    <h2 id="s4-h">இதோ உங்களுக்கான சாப்பாடு!</h2>
+    <p id="s4-sub"></p>
+  </div>
+  <div class="food-list" id="food-list"></div>
+  <div style="text-align:center;padding-bottom:24px;">
+    <button class="btn-ghost" id="s4-rs" onclick="restart()">↩ Start Over</button>
   </div>
 </div>
 
 <script>
-// ── LANGUAGE ──────────────────────────────────────────
-let lang = "en";
-const T = {
-  en: {
-    langBtn:"தமிழ்", tagline:"Discover Tamil Nadu food that matches how you feel — and order it on Swiggy or Zomato in one tap.",
-    start:"Get Started", note:"No login needed · Free to use",
-    pTitle:"Welcome to Mood & Food", pSub:"Let's find the perfect meal for how you feel today.",
-    pName:"What's your name? *", pAge:"Age or Date of Birth (Optional)", pContact:"Contact Number (Optional)", pNext:"Let's Begin →",
-    s2Hi:"Hi, {name}!", s2Sub:"Let's find out how you feel today.",
-    songTitle:"1. Which Tamil song matches your mood today?", songSub:"Tap a song to select it",
+// =========================================================
+//  TRANSLATIONS
+// =========================================================
+var L = "en";
+var TX = {
+  en:{
+    lb:"தமிழ்",
+    ltag:"Discover Tamil Nadu food that matches how you feel. Order on Swiggy or Zomato in one tap.",
+    lstart:"Get Started", lnote:"No login needed · Free to use",
+    ph:"Welcome to Mood & Food", psub:"Tell us a little about yourself.",
+    pln:"What is your name? *", pla:"Age or Date of Birth (Optional)", plc:"Contact Number (Optional)",
+    pbtn:"Let's Begin",
+    s2h:"Hi, {n}!", s2sub:"Let's find out how you feel today.",
+    s2st:"1. Which Tamil song matches your mood today?",
+    s2ss:"Tap a song to select it",
     back:"← Back", cont:"Continue →",
-    s3Title:"Confirm Your State", s3Sub:"We guessed {mood}, but you can change it!",
-    moodQ:"How are you feeling right now?", healthQ:"Any health conditions to consider?", seeFood:"See My Food →",
-    recTitle:"{name}இதோ உங்களுக்கான சாப்பாடு!", mood:"Mood", why:"Why",
-    swiggy:"Order on Swiggy", zomato:"Order on Zomato", whatsapp:"Share on WhatsApp",
-    restart:"↩ Start Over",
-    moods:["Happy","Sad","Angry","Tired","Excited"],
-    moodEmoji:{"Happy":"😊","Sad":"😢","Angry":"😠","Tired":"😴","Excited":"🤩"},
-    conditions:["🟡 Jaundice","🩸 Diabetes","❤️ Heart Problem","🤒 Infection","🤧 Allergies","✅ Normal / No Issues"],
+    s3h:"Confirm Your State", s3sub:"We guessed {m}. Confirm or change it below.",
+    s3mq:"How are you feeling right now?", s3hq:"Any health conditions to consider?",
+    seefood:"See My Food →",
+    s4restart:"↩ Start Over",
+    moodlabel:"Mood", whylabel:"Why",
+    swiggy:"Order on Swiggy", zomato:"Order on Zomato", wa:"Share on WhatsApp",
+    moodnames:["Happy","Sad","Angry","Tired","Excited"],
+    moodemoji:{"Happy":"😊","Sad":"😢","Angry":"😠","Tired":"😴","Excited":"🤩"},
+    conds:["🟡 Jaundice","🩸 Diabetes","❤️ Heart Problem","🤒 Infection","🤧 Allergies","✅ Normal / No Issues"],
+    qs:[
+      {q:"How are you feeling right now?",
+       c:["Very happy and active","Feeling sad or low","Very angry","Tired, want to rest"],
+       m:["Happy","Sad","Angry","Tired"]},
+      {q:"What do you want to do right now?",
+       c:["Dance or go out","Eat and sleep","Talk to someone","Be alone and quiet"],
+       m:["Excited","Tired","Happy","Sad"]},
+      {q:"If your mood is like the weather, what is it today?",
+       c:["Bright and sunny","Heavy rain","Hot and stormy","Cloudy and calm"],
+       m:["Happy","Sad","Angry","Tired"]},
+      {q:"Which face matches yours right now?",
+       c:["😄 Big smile","😢 Teary eyes","😤 Red face","😴 Half closed eyes"],
+       m:["Happy","Sad","Angry","Tired"]},
+      {q:"How does your body feel?",
+       c:["Full of energy","Heavy and slow","Tense and tight","Want to jump around"],
+       m:["Happy","Tired","Angry","Excited"]},
+      {q:"How did you wake up this morning?",
+       c:["Fresh and ready","Did not want to get up","Woke up frustrated","Woke up excited"],
+       m:["Happy","Tired","Angry","Excited"]},
+    ]
   },
-  ta: {
-    langBtn:"English", tagline:"உங்கள் மனநிலைக்கு ஏற்ற தமிழ்நாடு உணவைக் கண்டறியுங்கள் — Swiggy அல்லது Zomato-ல் ஒரே தட்டில் ஆர்டர் செய்யுங்கள்.",
-    start:"தொடங்குவோம்", note:"உள்நுழைவு தேவையில்லை · இலவசம்",
-    pTitle:"Mood & Food-க்கு வரவேற்கிறோம்", pSub:"இன்று நீங்கள் எப்படி உணர்கிறீர்கள் என்பதற்கு சரியான உணவைக் கண்டுபிடிப்போம்.",
-    pName:"உங்கள் பெயர் என்ன? *", pAge:"வயது அல்லது பிறந்த தேதி (விருப்பமானால்)", pContact:"தொடர்பு எண் (விருப்பமானால்)", pNext:"தொடங்குவோம் →",
-    s2Hi:"வணக்கம், {name}!", s2Sub:"இன்று நீங்கள் எப்படி உணர்கிறீர்கள் என்று பார்ப்போம்.",
-    songTitle:"1. இன்று உங்கள் மனநிலைக்கு எந்த தமிழ் பாடல் பொருந்துகிறது?", songSub:"ஒரு பாடலை தேர்ந்தெடுக்க தட்டவும்",
+  ta:{
+    lb:"English",
+    ltag:"உங்கள் மனநிலைக்கு ஏற்ற தமிழ்நாடு உணவைக் கண்டறியுங்கள். Swiggy அல்லது Zomato-ல் ஒரே தட்டில் ஆர்டர் செய்யுங்கள்.",
+    lstart:"தொடங்குவோம்", lnote:"உள்நுழைவு தேவையில்லை · இலவசம்",
+    ph:"Mood & Food-க்கு வரவேற்கிறோம்", psub:"உங்களைப் பற்றி கொஞ்சம் சொல்லுங்கள்.",
+    pln:"உங்கள் பெயர் என்ன? *", pla:"வயது அல்லது பிறந்த தேதி (விருப்பமானால்)", plc:"தொடர்பு எண் (விருப்பமானால்)",
+    pbtn:"தொடங்குவோம்",
+    s2h:"வணக்கம், {n}!", s2sub:"இன்று நீங்கள் எப்படி உணர்கிறீர்கள் என்று பார்ப்போம்.",
+    s2st:"1. இன்று உங்கள் மனநிலைக்கு எந்த தமிழ் பாடல் பொருந்துகிறது?",
+    s2ss:"ஒரு பாடலை தேர்ந்தெடுக்க தட்டவும்",
     back:"← திரும்பு", cont:"தொடர →",
-    s3Title:"உங்கள் நிலையை உறுதிப்படுத்தவும்", s3Sub:"நாங்கள் {mood} என்று யூகித்தோம், ஆனால் நீங்கள் மாற்றலாம்!",
-    moodQ:"இப்போது நீங்கள் எப்படி உணர்கிறீர்கள்?", healthQ:"கவனிக்க வேண்டிய ஆரோக்கிய நிலைகள் ஏதாவது?", seeFood:"என் உணவைப் பாருங்கள் →",
-    recTitle:"{name}இதோ உங்களுக்கான சாப்பாடு!", mood:"மனநிலை", why:"ஏன்",
-    swiggy:"Swiggy-ல் ஆர்டர் செய்யுங்கள்", zomato:"Zomato-ல் ஆர்டர் செய்யுங்கள்", whatsapp:"WhatsApp-ல் பகிரவும்",
-    restart:"↩ மீண்டும் தொடங்கு",
-    moods:["மகிழ்ச்சி","சோகம்","கோபம்","சோர்வு","உற்சாகம்"],
-    moodEmoji:{"மகிழ்ச்சி":"😊","சோகம்":"😢","கோபம்":"😠","சோர்வு":"😴","உற்சாகம்":"🤩"},
-    conditions:["🟡 மஞ்சள் காமாலை","🩸 நீரிழிவு","❤️ இதய பிரச்சனை","🤒 தொற்று","🤧 ஒவ்வாமை","✅ சாதாரண / பிரச்சனை இல்லை"],
+    s3h:"உங்கள் நிலையை உறுதிப்படுத்தவும்", s3sub:"நாங்கள் {m} என்று யூகித்தோம். கீழே உறுதிப்படுத்தவும் அல்லது மாற்றவும்.",
+    s3mq:"இப்போது நீங்கள் எப்படி உணர்கிறீர்கள்?", s3hq:"கவனிக்க வேண்டிய ஆரோக்கிய நிலைகள் ஏதாவது?",
+    seefood:"என் உணவைப் பாருங்கள் →",
+    s4restart:"↩ மீண்டும் தொடங்கு",
+    moodlabel:"மனநிலை", whylabel:"ஏன்",
+    swiggy:"Swiggy-ல் ஆர்டர் செய்யுங்கள்", zomato:"Zomato-ல் ஆர்டர் செய்யுங்கள்", wa:"WhatsApp-ல் பகிரவும்",
+    moodnames:["மகிழ்ச்சி","சோகம்","கோபம்","சோர்வு","உற்சாகம்"],
+    moodemoji:{"மகிழ்ச்சி":"😊","சோகம்":"😢","கோபம்":"😠","சோர்வு":"😴","உற்சாகம்":"🤩"},
+    conds:["🟡 மஞ்சள் காமாலை","🩸 நீரிழிவு","❤️ இதய பிரச்சனை","🤒 தொற்று","🤧 ஒவ்வாமை","✅ சாதாரண / பிரச்சனை இல்லை"],
+    qs:[
+      {q:"இப்போது நீங்கள் எப்படி உணர்கிறீர்கள்?",
+       c:["மிகவும் மகிழ்ச்சியாக","சோகமாக உணர்கிறேன்","மிகவும் கோபமாக","சோர்வாக, ஓய்வு வேண்டும்"],
+       m:["Happy","Sad","Angry","Tired"]},
+      {q:"இப்போது என்ன செய்ய வேண்டும் என்று தோன்றுகிறது?",
+       c:["ஆடி மகிழ / வெளியே போக","சாப்பிட்டு தூங்க","யாரிடமாவது பேச","தனியாக இருக்க"],
+       m:["Excited","Tired","Happy","Sad"]},
+      {q:"உங்கள் மனநிலை வானிலை போல இருந்தால், இன்று எப்படி?",
+       c:["பொலிவான வெயில்","கனமழை","சூடு மற்றும் புயல்","மேகமூட்டம் / அமைதி"],
+       m:["Happy","Sad","Angry","Tired"]},
+      {q:"இப்போது உங்கள் முகம் எப்படி இருக்கிறது?",
+       c:["😄 பெரிய சிரிப்பு","😢 கண்ணீர் நிரம்பிய கண்கள்","😤 சிவந்த முகம்","😴 பாதி மூடிய கண்கள்"],
+       m:["Happy","Sad","Angry","Tired"]},
+      {q:"உங்கள் உடல் இப்போது எப்படி உணர்கிறது?",
+       c:["சக்தி நிரம்பி","கனமான மற்றும் மெதுவான","இறுக்கமான","குதிக்க வேண்டும் போல"],
+       m:["Happy","Tired","Angry","Excited"]},
+      {q:"இன்று காலையில் எப்படி எழுந்தீர்கள்?",
+       c:["புத்துணர்வாக","எழுந்திரிக்கவே வேண்டாம் என்று","கோபமாக எழுந்தேன்","உற்சாகமாக எழுந்தேன்"],
+       m:["Happy","Tired","Angry","Excited"]},
+    ]
   }
 };
-function t(key){ return T[lang][key]||T.en[key]||key; }
-function toggleLang(){
-  lang = lang==="en"?"ta":"en";
-  applyLang();
-  if(currentScreen===2) renderStep2();
-  if(currentScreen===3) renderStep3();
-  if(currentScreen===4) showRecommendations(true);
+
+function tx(k){ return TX[L][k] || TX.en[k] || k; }
+
+// =========================================================
+//  SONGS
+// =========================================================
+var SONGS = [
+  {n:"Rowdy Baby",     f:"Maari 2",                 m:"Happy",   i:"🎉"},
+  {n:"Kolamaavu Kokila",f:"Kolamaavu Kokila",       m:"Angry",   i:"🔥"},
+  {n:"Nenjukkul Peidhidum",f:"Vaaranam Aayiram",   m:"Sad",     i:"💧"},
+  {n:"Venmathi",       f:"Cobra",                   m:"Tired",   i:"🌙"},
+  {n:"Aaluma Doluma",  f:"Vedalam",                 m:"Excited", i:"⚡"},
+  {n:"Kannaana Kanney",f:"Viswasam",                m:"Happy",   i:"🕊️"},
+  {n:"Enjoy Enjaami",  f:"Enjoy Enjaami",           m:"Happy",   i:"🌿"},
+  {n:"Arabic Kuthu",   f:"Beast",                   m:"Excited", i:"💃"},
+  {n:"Vaathi Coming",  f:"Master",                  m:"Excited", i:"👊"},
+  {n:"Kanave Kanave",  f:"David",                   m:"Sad",     i:"🌧️"},
+  {n:"Soorarai Pottru",f:"Soorarai Pottru",         m:"Tired",   i:"✈️"},
+  {n:"Oru Adaar Love", f:"Oru Adaar Love",          m:"Happy",   i:"💘"},
+  {n:"Inaindha Kaigal",f:"Ponniyin Selvan",         m:"Sad",     i:"🏛️"},
+  {n:"Maruvaarthai",   f:"Enai Noki Paayum Thota",  m:"Sad",     i:"🌊"},
+  {n:"Mersalaayitten", f:"I",                       m:"Excited", i:"🎆"},
+  {n:"Unakku Thaan",   f:"Kadal",                   m:"Angry",   i:"🌊"},
+  {n:"Yaen Ennai",     f:"Ko",                      m:"Sad",     i:"🥀"},
+  {n:"Bombe Helutaithe",f:"Tagaru",                 m:"Angry",   i:"🌪️"},
+];
+
+// =========================================================
+//  FOOD DATABASE
+// =========================================================
+var FDB = {
+  biryani:   {n:"Dindigul Biryani",         t:"தலப்பாகட்டி பிரியாணி",        d:"Flavourful seeraga samba rice biryani from Dindigul.",       r:"The most celebrated Tamil celebration food — perfect for a happy day!"},
+  panipuri:  {n:"Golgappa / Pani Puri",     t:"கோல்கப்பா",                     d:"Crispy puris filled with spiced tamarind water.",            r:"Pure street-food joy — each bite is a happiness explosion."},
+  payasam:   {n:"Pal Payasam",              t:"பால் பாயசம்",                   d:"Rich, creamy milk kheer with vermicelli and cardamom.",      r:"Tamil Nadu classic sweet for celebrations and happy moments."},
+  coffee:    {n:"Filter Coffee",            t:"பில்டர் காபி",                  d:"Frothy South Indian decoction with hot milk.",               r:"Starts any happy day with warmth and that irresistible aroma."},
+  dalrice:   {n:"Paruppu Sadam",            t:"பருப்பு சாதம்",                 d:"Soft dal poured over warm rice with a dollop of ghee.",     r:"The original Tamil comfort food — like a warm hug from home."},
+  curdrice:  {n:"Thayir Sadam",             t:"தயிர் சாதம்",                   d:"Creamy curd rice with tempered mustard and curry leaves.",   r:"Cool, gentle, and deeply soothing — Tamil Nadu soul food."},
+  halwa:     {n:"Tirunelveli Halwa",         t:"திருநெல்வேலி அல்வா",           d:"Dark, dense wheat halwa slow-cooked in ghee.",              r:"Sweet and nostalgic — famous across Tamil Nadu for centuries."},
+  koozh:     {n:"Ragi Koozh",               t:"கேழ்வரகு கூழ்",                d:"Thick finger-millet porridge with buttermilk and salt.",     r:"Traditional cooling comfort — steadies your mood from the inside."},
+  coconut:   {n:"Tender Coconut",           t:"இளநீர்",                        d:"Fresh tender coconut water, nature's coolant.",              r:"Instantly cooling and calming — the best natural anger remedy."},
+  nannari:   {n:"Nannari Sherbet",           t:"நன்னாரி ஷர்பத்",               d:"Chilled sarsaparilla drink with lemon and rose.",            r:"Tamil Nadu famous cooling drink — takes the fire right out."},
+  paniyaram: {n:"Kuzhi Paniyaram",           t:"குழி பணியாரம்",                d:"Soft fermented rice balls, sweet or spicy.",                 r:"Bite-sized and satisfying — calms hunger and cools you down."},
+  idli:      {n:"Soft Idli with Sambar",     t:"இட்லி சாம்பார்",               d:"Fluffy steamed rice cakes with lentil sambar.",             r:"Light, easy to digest, gives gentle energy without heaviness."},
+  aval:      {n:"Aval Upma",                 t:"அவல் உப்மா",                   d:"Flattened rice cooked with mustard, onion and coconut.",     r:"Quick, light, and iron-rich — a classic energy restorer."},
+  bshake:    {n:"Banana & Dates Shake",      t:"வாழைப்பழம் பேரீச்சம் மில்க் ஷேக்", d:"Thick shake with banana, dates and cold milk.",      r:"Natural sugars and potassium for a clean sustained energy lift."},
+  dosa:      {n:"Masala Dosa",               t:"மசால் தோசை",                   d:"Crispy golden crepe with spiced potato filling.",            r:"As exciting as your mood — the king of Tamil snacks!"},
+  kothu:     {n:"Kothu Parotta",             t:"கோது பரோட்டா",                 d:"Shredded parotta stir-fried with egg, masala and onion.",   r:"Bold, loud flavours for a bold exciting mood!"},
+  murukku:   {n:"Murukku & Tea",             t:"முறுக்கு தேநீர்",               d:"Crunchy spiral rice flour snack with spiced tea.",           r:"Classic Tamil festive snack combo — fun and full of crunch."},
+  pavakkai:  {n:"Pavakkai Poriyal",          t:"பாவக்காய் பொரியல்",            d:"Bitter gourd dry curry with coconut and spices.",           r:"Bitter gourd is one of nature's best blood sugar regulators."},
+  vendhaya:  {n:"Vendhaya Keerai Kootu",     t:"வெந்தய கீரை கூட்டு",          d:"Fenugreek leaves cooked with lentils and coconut.",         r:"Fenugreek slows sugar absorption — a classic diabetes remedy."},
+  kambu:     {n:"Kambu Sadam",               t:"கம்பு சாதம்",                  d:"Pearl millet rice — low glycemic and highly nutritious.",    r:"Traditional millet grains — the original Tamil diabetic food."},
+  oatspong:  {n:"Oats Pongal",               t:"ஓட்ஸ் பொங்கல்",               d:"Savoury oats cooked with pepper, ghee and ginger.",         r:"Heart-healthy oats in a comforting Tamil style."},
+  keerai:    {n:"Keerai Masiyal",             t:"கீரை மசியல்",                 d:"Mashed spinach curry with garlic and shallots.",            r:"Iron-rich greens are excellent for heart health."},
+  rasam:     {n:"Pepper Rasam",              t:"மிளகு ரசம்",                   d:"South Indian tangy pepper broth with tomato and tamarind.", r:"Pepper and turmeric reduce inflammation and support heart health."},
+  pongal:    {n:"Moong Dal Pongal",          t:"மூங் தால் பொங்கல்",            d:"Soft rice and moong dal — easy on the stomach.",            r:"The perfect liver-friendly meal — soft, light, and nourishing."},
+  lemon:     {n:"Nimbu Pani (Lemon Water)",  t:"எலுமிச்சை தண்ணீர்",           d:"Fresh lime juice with a pinch of salt and sugar.",          r:"Detoxes the liver and keeps you hydrated during recovery."},
+  papaya:    {n:"Papaya & Banana",           t:"பப்பாளி மற்றும் வாழைப்பழம்", d:"Fresh papaya and ripe banana — soft and easy to eat.",      r:"Helps digestion and recovery without straining the liver."},
+  turmilk:   {n:"Manjal Paal (Turmeric Milk)",t:"மஞ்சள் பால்",               d:"Warm milk with turmeric, pepper and ginger.",               r:"Tamil Nadu age-old immunity booster and infection fighter."},
+  grasam:    {n:"Pepper & Garlic Rasam",     t:"மிளகு பூண்டு ரசம்",           d:"Fiery South Indian broth with pepper, garlic and cumin.",   r:"Clears congestion and boosts immunity with every sip."},
+  ginger:    {n:"Inji Tea (Ginger Tea)",      t:"இஞ்சி தேநீர்",               d:"Strong ginger tea with tulsi and cardamom.",                r:"Ginger fights infection and soothes a sore throat fast."},
+  javvarisi: {n:"Javvarisi Kanji",            t:"ஜவ்வரிசி கஞ்சி",             d:"Soft sago porridge with coconut milk.",                     r:"Naturally gluten-free and very gentle on sensitive stomachs."},
+  kanji:     {n:"Kanji (Rice Porridge)",      t:"கஞ்சி",                       d:"Thin rice porridge with a pinch of salt.",                  r:"The safest, most gentle food during any allergic reaction."},
+  idiyappam: {n:"Idiyappam with Coconut Milk",t:"இடியாப்பம் தேங்காய் பால்", d:"Delicate string hoppers with sweet coconut milk.",          r:"Light, universally loved, and comforting any time of day."},
+};
+
+// =========================================================
+//  RECOMMENDATION ENGINE
+// =========================================================
+function getRecs(mood, health){
+  var seen={}, res=[];
+  function add(k){ if(!seen[k]&&FDB[k]){ seen[k]=1; res.push(Object.assign({id:k},FDB[k])); } }
+  var normal = health.indexOf("Normal / No Issues")>-1 || health.length===0;
+  if(health.indexOf("Diabetes")>-1)      { add("pavakkai");add("vendhaya");add("kambu"); }
+  if(health.indexOf("Heart Problem")>-1) { add("oatspong");add("keerai");add("rasam"); }
+  if(health.indexOf("Jaundice")>-1)      { add("pongal");add("lemon");add("papaya"); }
+  if(health.indexOf("Infection")>-1)     { add("turmilk");add("grasam");add("ginger"); }
+  if(health.indexOf("Allergies")>-1)     { add("javvarisi");add("kanji"); }
+  if(normal || res.length<2){
+    if(mood==="Happy")   { add("biryani");add("panipuri");add("payasam");add("coffee"); }
+    else if(mood==="Sad"){ add("dalrice");add("curdrice");add("halwa");add("koozh"); }
+    else if(mood==="Angry"){ add("coconut");add("nannari");add("paniyaram"); }
+    else if(mood==="Tired"){ add("idli");add("aval");add("bshake"); }
+    else if(mood==="Excited"){ add("dosa");add("kothu");add("murukku"); }
+    else { add("idli");add("curdrice");add("coffee"); }
+  }
+  if(res.length<3) add("idiyappam");
+  return res.slice(0,4);
 }
+
+// =========================================================
+//  STATE
+// =========================================================
+var S={name:"",age:"",contact:"",mood:"",health:[],song:"",qans:{}};
+var curScreen=0;
+var sessSongs=[], sessQs=[];
+
+function shuffle(a){ return a.slice().sort(function(){return Math.random()-.5;}); }
+
+function initSess(){
+  sessSongs=shuffle(SONGS).slice(0,6);
+  sessQs=shuffle(tx("qs")).slice(0,2);
+  S.song=""; S.qans={}; S.mood=""; S.health=[];
+}
+
+// =========================================================
+//  AUDIO
+// =========================================================
+var aCtx=null;
+function getACtx(){ if(!aCtx) aCtx=new(window.AudioContext||window.webkitAudioContext)(); return aCtx; }
+function beep(f,d,type,delay){
+  try{
+    var ctx=getACtx(), o=ctx.createOscillator(), g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type=type||"sine"; o.frequency.value=f;
+    var t=ctx.currentTime+(delay||0);
+    g.gain.setValueAtTime(0.18,t);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+    o.start(t); o.stop(t+d);
+  }catch(e){}
+}
+var TONES={
+  Happy:function(){beep(523,.18,"sine",0);beep(659,.18,"sine",.2);beep(784,.3,"sine",.4);},
+  Sad:function(){beep(392,.3,"sine",0);beep(349,.3,"sine",.35);beep(330,.5,"sine",.7);},
+  Angry:function(){beep(220,.12,"sawtooth",0);beep(233,.12,"sawtooth",.14);beep(220,.3,"sawtooth",.3);},
+  Tired:function(){beep(440,.5,"sine",0);beep(415,.7,"sine",.6);},
+  Excited:function(){beep(660,.1,"square",0);beep(784,.1,"square",.12);beep(880,.1,"square",.24);beep(1047,.2,"square",.38);}
+};
+function playMoodTone(m){ (TONES[m]||TONES.Happy)(); }
+
+// =========================================================
+//  LANGUAGE SWITCH
+// =========================================================
+function switchLang(){
+  L = L==="en"?"ta":"en";
+  applyLang();
+  if(curScreen===2) renderS2();
+  if(curScreen===3) renderS3();
+  if(curScreen===4) showFood(true);
+}
+
 function applyLang(){
-  const l=t;
-  document.getElementById("lang-btn").textContent=l("langBtn");
-  document.getElementById("l-tagline").textContent=l("tagline");
-  document.getElementById("l-start").textContent=l("start");
-  document.getElementById("l-note").textContent=l("note");
-  document.getElementById("p-title").textContent=l("pTitle");
-  document.getElementById("p-sub").textContent=l("pSub");
-  document.getElementById("p-lname").textContent=l("pName");
-  document.getElementById("p-lage").textContent=l("pAge");
-  document.getElementById("p-lcontact").textContent=l("pContact");
-  document.getElementById("btn-profile-next").textContent=l("pNext");
-  document.getElementById("s2-song-title").textContent=l("songTitle");
-  document.getElementById("s2-song-sub").textContent=l("songSub");
-  document.getElementById("s2-back").textContent=l("back");
-  document.getElementById("btn-disc-next").textContent=l("cont");
-  document.getElementById("s3-title").textContent=l("s3Title");
-  document.getElementById("s3-mood-q").textContent=l("moodQ");
-  document.getElementById("s3-health-q").textContent=l("healthQ");
-  document.getElementById("s3-back").textContent=l("back");
-  document.getElementById("btn-health-next").textContent=l("seeFood");
-  document.getElementById("s4-restart").textContent=l("restart");
-  // Dynamic titles
-  if(state.name) document.getElementById("s2-title").textContent=l("s2Hi").replace("{name}",state.name);
-  document.getElementById("s2-sub").textContent=l("s2Sub");
-  if(state.mood) document.getElementById("s3-subtitle").textContent=l("s3Sub").replace("{mood}",state.mood);
+  document.getElementById("lang-btn").textContent=tx("lb");
+  setTxt("l-tag",tx("ltag"));
+  setTxt("l-start",tx("lstart"));
+  setTxt("l-note",tx("lnote"));
+  setTxt("p-h",tx("ph"));
+  setTxt("p-sub",tx("psub"));
+  setTxt("p-ln",tx("pln"));
+  setTxt("p-la",tx("pla"));
+  setTxt("p-lc",tx("plc"));
+  setTxt("btn-p",tx("pbtn"));
+  setTxt("s2-sub",tx("s2sub"));
+  setTxt("s2-st",tx("s2st"));
+  setTxt("s2-ss",tx("s2ss"));
+  setTxt("s2-bk",tx("back"));
+  setTxt("btn-d",tx("cont"));
+  setTxt("s3-h",tx("s3h"));
+  setTxt("s3-mq",tx("s3mq"));
+  setTxt("s3-hq",tx("s3hq"));
+  setTxt("s3-bk",tx("back"));
+  setTxt("btn-h",tx("seefood"));
+  setTxt("s4-rs",tx("s4restart"));
+  var s2h=document.getElementById("s2-h");
+  if(s2h) s2h.textContent=tx("s2h").replace("{n}",S.name||"friend");
+  var s3sub=document.getElementById("s3-sub");
+  if(s3sub) s3sub.textContent=tx("s3sub").replace("{m}",S.mood||"...");
 }
+function setTxt(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; }
 
-// ── STATE ─────────────────────────────────────────────
-const state={name:"",age:"",contact:"",mood:"",health:[],selectedSong:"",questionAnswers:{}};
-let currentScreen=0;
-
-// ── SONGS ─────────────────────────────────────────────
-const ALL_SONGS=[
-  {name:"Rowdy Baby",film:"Maari 2",mood:"Happy",icon:"🎉"},
-  {name:"Kolamaavu Kokila",film:"Kolamaavu Kokila",mood:"Angry",icon:"🔥"},
-  {name:"Nenjukkul Peidhidum",film:"Vaaranam Aayiram",mood:"Sad",icon:"💧"},
-  {name:"Venmathi",film:"Cobra",mood:"Tired",icon:"🌙"},
-  {name:"Aaluma Doluma",film:"Vedalam",mood:"Excited",icon:"⚡"},
-  {name:"Kannaana Kanney",film:"Viswasam",mood:"Happy",icon:"🕊️"},
-  {name:"Enjoy Enjaami",film:"Enjoy Enjaami",mood:"Happy",icon:"🌿"},
-  {name:"Arabic Kuthu",film:"Beast",mood:"Excited",icon:"💃"},
-  {name:"Vaathi Coming",film:"Master",mood:"Excited",icon:"👊"},
-  {name:"Kanave Kanave",film:"David",mood:"Sad",icon:"🌧️"},
-  {name:"Soorarai Pottru",film:"Soorarai Pottru",mood:"Tired",icon:"✈️"},
-  {name:"Oru Adaar Love",film:"Oru Adaar Love",mood:"Happy",icon:"💘"},
-  {name:"Inaindha Kaigal",film:"Ponniyin Selvan",mood:"Sad",icon:"🏛️"},
-  {name:"Maruvaarthai",film:"Enai Noki Paayum Thota",mood:"Sad",icon:"🌊"},
-  {name:"Mersalaayitten",film:"I",mood:"Excited",icon:"🎆"},
-  {name:"Unakku Thaan",film:"Kadal",mood:"Angry",icon:"🌊"},
-  {name:"Yaen Ennai",film:"Ko",mood:"Sad",icon:"🥀"},
-  {name:"Bombe Helutaithe",film:"Tagaru",mood:"Angry",icon:"🌪️"},
-];
-
-// ── QUESTIONS ─────────────────────────────────────────
-const ALL_QUESTIONS=[
-  {id:"q1",en:"How are you feeling right now?",ta:"இப்போது நீங்கள் எப்படி உணர்கிறீர்கள்?",
-   choices:{en:["Very happy and active","Feeling sad or low","Very angry","Tired, want to rest"],ta:["மிகவும் மகிழ்ச்சியாக","சோகமாக உணர்கிறேன்","மிகவும் கோபமாக","சோர்வாக, ஓய்வு வேண்டும்"]},
-   moods:["Happy","Sad","Angry","Tired"]},
-  {id:"q2",en:"What do you want to do right now?",ta:"இப்போது என்ன செய்ய வேண்டும் என்று தோன்றுகிறது?",
-   choices:{en:["Dance or go out","Eat and sleep","Talk to someone","Be alone and quiet"],ta:["ஆடி மகிழ / வெளியே போக","சாப்பிட்டு தூங்க","யாரிடமாவது பேச","தனியாக இருக்க"]},
-   moods:["Excited","Tired","Happy","Sad"]},
-  {id:"q3",en:"If your mood is like the weather, what is it today?",ta:"உங்கள் மனநிலை வானிலை போல இருந்தால், இன்று எப்படி?",
-   choices:{en:["Bright and sunny","Heavy rain","Hot and stormy","Cloudy and calm"],ta:["பொலிவான வெயில்","கனமழை","சூடு மற்றும் புயல்","மேகமூட்டம் / அமைதி"]},
-   moods:["Happy","Sad","Angry","Tired"]},
-  {id:"q4",en:"What kind of food sounds good right now?",ta:"இப்போது எந்த வகை உணவு சாப்பிட மனம் வருகிறது?",
-   choices:{en:["Spicy and hot","Sweet and soft","Light and simple","Nothing, not hungry"],ta:["காரமான / சூடான","இனிப்பான / மென்மையான","லேசான / எளிமையான","ஒன்றும் வேண்டாம்"]},
-   moods:["Excited","Happy","Tired","Sad"]},
-  {id:"q5",en:"Which face matches yours right now?",ta:"இப்போது உங்கள் முகம் எப்படி இருக்கிறது?",
-   choices:{en:["😄 Big smile","😢 Teary eyes","😤 Red face","😴 Half closed eyes"],ta:["😄 பெரிய சிரிப்பு","😢 கண்ணீர் நிரம்பிய கண்கள்","😤 சிவந்த முகம்","😴 பாதி மூடிய கண்கள்"]},
-   moods:["Happy","Sad","Angry","Tired"]},
-];
-
-// ── FOOD DB ───────────────────────────────────────────
-const FOOD_DB={
-  biryani:{name:"Dindigul Biryani",tamil:"தலப்பாகட்டி பிரியாணி",desc:"Flavourful seeraga samba rice biryani from Dindigul.",reason:"The most celebrated Tamil celebration food — perfect for a happy day!"},
-  pani_puri:{name:"Golgappa / Pani Puri",tamil:"கோல்கப்பா",desc:"Crispy puris filled with spiced tamarind water.",reason:"Pure street-food joy — each bite is a little happiness explosion."},
-  payasam:{name:"Pal Payasam",tamil:"பால் பாயசம்",desc:"Rich, creamy milk kheer with vermicelli and cardamom.",reason:"Tamil Nadu's classic sweet for celebrations and happy moments."},
-  filter_coffee:{name:"Filter Coffee",tamil:"பில்டர் காபி",desc:"Frothy South Indian decoction with hot milk.",reason:"Starts any happy day with warmth and that irresistible aroma."},
-  dal_rice:{name:"Paruppu Sadam",tamil:"பருப்பு சாதம்",desc:"Soft dal poured over warm rice with a dollop of ghee.",reason:"The original Tamil comfort food — like a warm hug from home."},
-  curd_rice:{name:"Thayir Sadam",tamil:"தயிர் சாதம்",desc:"Creamy curd rice with tempered mustard and curry leaves.",reason:"Cool, gentle, and deeply soothing — Tamil Nadu's soul food."},
-  halwa:{name:"Tirunelveli Halwa",tamil:"திருநெல்வேலி அல்வா",desc:"Dark, dense wheat halwa slow-cooked in ghee.",reason:"Sweet and nostalgic — famous across Tamil Nadu for centuries."},
-  koozh:{name:"Ragi Koozh",tamil:"கேழ்வரகு கூழ்",desc:"Thick finger-millet porridge with buttermilk and salt.",reason:"Traditional cooling comfort — steadies your mood from the inside."},
-  tender_coconut:{name:"Tender Coconut",tamil:"இளநீர்",desc:"Fresh tender coconut water, nature's coolant.",reason:"Instantly cooling and calming — the best natural anger remedy."},
-  lassi:{name:"Nannari Sherbet",tamil:"நன்னாரி ஷர்பத்",desc:"Chilled sarsaparilla drink with lemon and rose.",reason:"Tamil Nadu's famous cooling drink — takes the fire right out."},
-  paniyaram:{name:"Kuzhi Paniyaram",tamil:"குழி பணியாரம்",desc:"Soft fermented rice balls, sweet or spicy.",reason:"Bite-sized and satisfying — calms hunger and cools you down."},
-  idli:{name:"Soft Idli with Sambar",tamil:"இட்லி சாம்பார்",desc:"Fluffy steamed rice cakes with lentil sambar.",reason:"Light, easy to digest, and gives gentle energy without heaviness."},
-  poha:{name:"Aval Upma",tamil:"அவல் உப்மா",desc:"Flattened rice cooked with mustard, onion and coconut.",reason:"Quick, light, and iron-rich — a classic energy restorer."},
-  banana_shake:{name:"Banana & Dates Shake",tamil:"வாழைப்பழம் பேரீச்சம் மில்க் ஷேக்",desc:"Thick shake with banana, dates and cold milk.",reason:"Natural sugars and potassium for a clean sustained energy lift."},
-  dosa:{name:"Masala Dosa",tamil:"மசால் தோசை",desc:"Crispy golden crepe with spiced potato filling.",reason:"As exciting and satisfying as your mood — the king of Tamil snacks!"},
-  kothu:{name:"Kothu Parotta",tamil:"கோது பரோட்டா",desc:"Shredded parotta stir-fried with egg, masala and onion.",reason:"Bold, loud flavours for a bold exciting mood!"},
-  murukku:{name:"Murukku & Tea",tamil:"முறுக்கு தேநீர்",desc:"Crunchy spiral rice flour snack with spiced tea.",reason:"Classic Tamil festive snack combo — fun and full of crunch."},
-  karela:{name:"Pavakkai Poriyal",tamil:"பாவக்காய் பொரியல்",desc:"Bitter gourd dry curry with coconut and spices.",reason:"Bitter gourd is one of nature's best blood sugar regulators."},
-  methi_dal:{name:"Vendhaya Keerai Kootu",tamil:"வெந்தய கீரை கூட்டு",desc:"Fenugreek leaves cooked with lentils and coconut.",reason:"Fenugreek slows sugar absorption — a classic diabetes remedy."},
-  millets:{name:"Kambu Sadam",tamil:"கம்பு சாதம்",desc:"Pearl millet rice — low glycemic and highly nutritious.",reason:"Traditional millet grains — the original Tamil diabetic-friendly food."},
-  oats_upma:{name:"Oats Pongal",tamil:"ஓட்ஸ் பொங்கல்",desc:"Savoury oats cooked with pepper, ghee and ginger.",reason:"Heart-healthy oats in a comforting Tamil style."},
-  palak_soup:{name:"Keerai Masiyal",tamil:"கீரை மசியல்",desc:"Mashed spinach curry with garlic and shallots.",reason:"Iron-rich greens are excellent for heart health."},
-  rasam:{name:"Pepper Rasam",tamil:"மிளகு ரசம்",desc:"South Indian tangy pepper broth with tomato and tamarind.",reason:"Pepper and turmeric reduce inflammation and support heart health."},
-  khichdi:{name:"Moong Dal Pongal",tamil:"மூங் தால் பொங்கல்",desc:"Soft rice and moong dal — easy on the stomach.",reason:"The perfect liver-friendly meal — soft, light, and nourishing."},
-  nimbu_pani:{name:"Nimbu Pani (Lemon Water)",tamil:"எலுமிச்சை தண்ணீர்",desc:"Fresh lime juice with a pinch of salt and sugar.",reason:"Detoxes the liver and keeps you hydrated during recovery."},
-  papaya:{name:"Papaya & Banana",tamil:"பப்பாளி மற்றும் வாழைப்பழம்",desc:"Fresh papaya and ripe banana — soft and easy to eat.",reason:"Helps digestion and recovery without straining the liver."},
-  haldi_milk:{name:"Manjal Paal (Turmeric Milk)",tamil:"மஞ்சள் பால்",desc:"Warm milk with turmeric, pepper and ginger.",reason:"Tamil Nadu's age-old immunity booster and infection fighter."},
-  rasam_inf:{name:"Pepper & Garlic Rasam",tamil:"மிளகு பூண்டு ரசம்",desc:"Fiery South Indian broth with pepper, garlic and cumin.",reason:"Clears congestion and boosts immunity with every sip."},
-  ginger_tea:{name:"Inji Tea (Ginger Tea)",tamil:"இஞ்சி தேநீர்",desc:"Strong ginger tea with tulsi and cardamom.",reason:"Ginger fights infection and soothes a sore throat fast."},
-  sabudana:{name:"Javvarisi Kanji",tamil:"ஜவ்வரிசி கஞ்சி",desc:"Soft sago porridge with coconut milk.",reason:"Naturally gluten-free and very gentle on sensitive stomachs."},
-  plain_rice:{name:"Kanji (Rice Porridge)",tamil:"கஞ்சி",desc:"Thin rice porridge with a pinch of salt.",reason:"The safest, most gentle food during any allergic reaction."},
-  idiyappam:{name:"Idiyappam with Coconut Milk",tamil:"இடியாப்பம் தேங்காய் பால்",desc:"Delicate string hoppers with sweet coconut milk.",reason:"Light, universally loved, and comforting any time of day."},
-};
-
-// ── RECOMMENDATIONS ───────────────────────────────────
-function getRecommendations(mood,health){
-  const seen=new Set(),result=[];
-  const add=k=>{if(!seen.has(k)&&FOOD_DB[k]){seen.add(k);result.push({id:k,...FOOD_DB[k]});}};
-  const has=c=>health.includes(c);
-  const isNormal=health.includes("Normal / No Issues")||health.length===0;
-  if(has("Diabetes")){add("karela");add("methi_dal");add("millets");}
-  if(has("Heart Problem")){add("oats_upma");add("palak_soup");add("rasam");}
-  if(has("Jaundice")){add("khichdi");add("nimbu_pani");add("papaya");}
-  if(has("Infection")){add("haldi_milk");add("rasam_inf");add("ginger_tea");}
-  if(has("Allergies")){add("sabudana");add("plain_rice");}
-  if(isNormal||result.length<2){
-    if(mood==="Happy"){add("biryani");add("pani_puri");add("payasam");add("filter_coffee");}
-    else if(mood==="Sad"){add("dal_rice");add("curd_rice");add("halwa");add("koozh");}
-    else if(mood==="Angry"){add("tender_coconut");add("lassi");add("paniyaram");}
-    else if(mood==="Tired"){add("idli");add("poha");add("banana_shake");}
-    else if(mood==="Excited"){add("dosa");add("kothu");add("murukku");}
-    else{add("idli");add("curd_rice");add("filter_coffee");}
-  }
-  if(result.length<3)add("idiyappam");
-  return result.slice(0,4);
-}
-
-// ── MOOD / CONDITION MAPPING ──────────────────────────
-// English mood name → for food logic
-const MOOD_EN={"Happy":"Happy","Sad":"Sad","Angry":"Angry","Tired":"Tired","Excited":"Excited",
-  "மகிழ்ச்சி":"Happy","சோகம்":"Sad","கோபம்":"Angry","சோர்வு":"Tired","உற்சாகம்":"Excited"};
-const COND_EN={"Jaundice":"Jaundice","Diabetes":"Diabetes","Heart Problem":"Heart Problem",
-  "Infection":"Infection","Allergies":"Allergies","Normal / No Issues":"Normal / No Issues",
-  "மஞ்சள் காமாலை":"Jaundice","நீரிழிவு":"Diabetes","இதய பிரச்சனை":"Heart Problem",
-  "தொற்று":"Infection","ஒவ்வாமை":"Allergies","சாதாரண / பிரச்சனை இல்லை":"Normal / No Issues"};
-function condClean(c){return c.replace(/[^\w /]/g,"").trim();}
-function condKey(c){const cl=condClean(c);return COND_EN[cl]||cl;}
-
-// ── AUDIO ─────────────────────────────────────────────
-let audioCtx=null;
-function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
-function beep(f,d,type="sine",delay=0){try{const ctx=getCtx(),o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type=type;o.frequency.value=f;const t=ctx.currentTime+delay;g.gain.setValueAtTime(0.18,t);g.gain.exponentialRampToValueAtTime(0.0001,t+d);o.start(t);o.stop(t+d);}catch(e){}}
-const TONES={Happy:()=>{beep(523,.18,"sine",0);beep(659,.18,"sine",0.2);beep(784,.3,"sine",0.4);},Sad:()=>{beep(392,.3,"sine",0);beep(349,.3,"sine",0.35);beep(330,.5,"sine",0.7);},Angry:()=>{beep(220,.12,"sawtooth",0);beep(233,.12,"sawtooth",0.14);beep(220,.3,"sawtooth",0.3);},Tired:()=>{beep(440,.5,"sine",0);beep(415,.7,"sine",0.6);},Excited:()=>{beep(660,.1,"square",0);beep(784,.1,"square",0.12);beep(880,.1,"square",0.24);beep(1047,.2,"square",0.38);}};
-function playTone(mood){(TONES[MOOD_EN[mood]]||TONES.Happy)();}
-
-// ── SESSION ───────────────────────────────────────────
-let sessionSongs=[];let sessionQuestions=[];
-function shuffle(arr){return[...arr].sort(()=>Math.random()-0.5);}
-function initSession(){sessionSongs=shuffle(ALL_SONGS).slice(0,6);sessionQuestions=shuffle(ALL_QUESTIONS).slice(0,2);state.selectedSong="";state.questionAnswers={};state.mood="";state.health=[];}
-
-// ── NAVIGATION ────────────────────────────────────────
-function goto(n){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+// =========================================================
+//  NAVIGATION
+// =========================================================
+function go(n){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
   document.getElementById("s"+n).classList.add("active");
-  currentScreen=n; window.scrollTo(0,0);
-  if(n===2)renderStep2();
-  if(n===3)renderStep3();
+  curScreen=n; window.scrollTo(0,0);
+  if(n===2) renderS2();
+  if(n===3) renderS3();
   applyLang();
 }
 
-// ── STEP 1 ────────────────────────────────────────────
-function checkProfile(){document.getElementById("btn-profile-next").disabled=document.getElementById("inp-name").value.trim().length===0;}
-function saveProfile(){state.name=document.getElementById("inp-name").value.trim();state.age=document.getElementById("inp-age").value.trim();state.contact=document.getElementById("inp-contact").value.trim();goto(2);}
+// =========================================================
+//  SCREEN 1 — PROFILE
+// =========================================================
+function chkP(){
+  document.getElementById("btn-p").disabled = document.getElementById("inp-name").value.trim().length===0;
+}
+function saveP(){
+  S.name=document.getElementById("inp-name").value.trim();
+  S.age=document.getElementById("inp-age").value.trim();
+  S.contact=document.getElementById("inp-contact").value.trim();
+  go(2);
+}
 
-// ── STEP 2 ────────────────────────────────────────────
-function renderStep2(){
-  document.getElementById("s2-title").textContent=t("s2Hi").replace("{name}",state.name||"friend");
-  const sg=document.getElementById("song-grid");
-  sg.innerHTML=sessionSongs.map(s=>`<button class="pick-btn${state.selectedSong===s.name?" selected":""}" onclick="selectSong('${s.name.replace(/'/g,"\\'")}','${s.mood}',this)"><div class="icon">${s.icon}</div><div class="title">${s.name}</div><div class="sub">${s.film}</div></button>`).join("");
-  const qa=document.getElementById("questions-area");
-  qa.innerHTML=sessionQuestions.map((q,i)=>{
-    const choices=q.choices[lang]||q.choices.en;
-    return`<div style="margin-bottom:20px;"><div class="section-title">${i+2}. ${q[lang]||q.en}</div><div class="grid2">${choices.map((c,ci)=>`<button class="pick-btn${state.questionAnswers[q.id]===ci?" selected":""}" onclick="selectAnswer('${q.id}',${ci},'${q.moods[ci]}',this)">${c}</button>`).join("")}</div></div>`;
+// =========================================================
+//  SCREEN 2 — MOOD DISCOVERY
+// =========================================================
+function renderS2(){
+  sessQs = shuffle(tx("qs")).slice(0,2);
+  document.getElementById("s2-h").textContent = tx("s2h").replace("{n}", S.name||"friend");
+  var sg=document.getElementById("song-grid");
+  sg.innerHTML=sessSongs.map(function(s){
+    return '<button class="pick'+(S.song===s.n?" sel":"")+'" onclick="pickSong(\''+s.n.replace(/'/g,"\\'")+"','"+s.m+'\',this)">'+
+      '<div class="ico">'+s.i+'</div>'+
+      '<div class="ttl">'+s.n+'</div>'+
+      '<div class="sub">'+s.f+'</div></button>';
   }).join("");
-  checkDiscComplete();
+  var qa=document.getElementById("q-area");
+  qa.innerHTML=sessQs.map(function(q,i){
+    return '<div style="margin-bottom:20px;">'+
+      '<div class="sec">'+(i+2)+". "+q.q+'</div>'+
+      '<div class="g2">'+q.c.map(function(c,ci){
+        return '<button class="pick'+(S.qans[i]===ci?" sel":"")+'" onclick="pickQ('+i+','+ci+',\''+q.m[ci]+'\',this)">'+c+'</button>';
+      }).join("")+'</div></div>';
+  }).join("");
+  chkD();
 }
-function selectSong(name,mood,el){state.selectedSong=name;state.mood=mood;document.querySelectorAll("#song-grid .pick-btn").forEach(b=>b.classList.remove("selected"));el.classList.add("selected");playTone(mood);checkDiscComplete();}
-function selectAnswer(qId,choiceIdx,mood,el){state.questionAnswers[qId]=choiceIdx;if(!state.selectedSong)state.mood=mood;const grid=el.closest(".grid2");grid.querySelectorAll(".pick-btn").forEach(b=>b.classList.remove("selected"));el.classList.add("selected");checkDiscComplete();}
-function checkDiscComplete(){document.getElementById("btn-disc-next").disabled=!(state.selectedSong&&Object.keys(state.questionAnswers).length===sessionQuestions.length);}
-
-// ── STEP 3 ────────────────────────────────────────────
-function renderStep3(){
-  document.getElementById("s3-subtitle").textContent=t("s3Sub").replace("{mood}",state.mood||"something");
-  const moods=t("moods");const moodEmoji=t("moodEmoji");
-  document.getElementById("mood-row").innerHTML=moods.map(m=>`<button class="mood-pill${MOOD_EN[state.mood]===MOOD_EN[m]?" selected":""}" onclick="selectMood('${m}',this)"><span class="em">${moodEmoji[m]||"😊"}</span>${m}</button>`).join("");
-  const conditions=t("conditions");
-  document.getElementById("health-chips").innerHTML=conditions.map(c=>`<button class="chip${state.health.includes(condKey(c))?" selected":""}" onclick="toggleHealth('${c.replace(/'/g,"\\'")}',this)">${c}</button>`).join("");
-  checkHealthComplete();
+function pickSong(name,mood,el){
+  S.song=name; S.mood=mood;
+  document.querySelectorAll("#song-grid .pick").forEach(function(b){b.classList.remove("sel");});
+  el.classList.add("sel");
+  playMoodTone(mood);
+  chkD();
 }
-function selectMood(name,el){state.mood=MOOD_EN[name]||name;document.querySelectorAll(".mood-pill").forEach(b=>b.classList.remove("selected"));el.classList.add("selected");checkHealthComplete();}
-function toggleHealth(c,el){const key=condKey(c);if(key==="Normal / No Issues"){state.health=["Normal / No Issues"];document.querySelectorAll(".chip").forEach(b=>b.classList.remove("selected"));el.classList.add("selected");}else{state.health=state.health.filter(h=>h!=="Normal / No Issues");const idx=state.health.indexOf(key);if(idx>-1)state.health.splice(idx,1);else state.health.push(key);document.querySelectorAll(".chip").forEach(b=>{b.classList.toggle("selected",state.health.includes(condKey(b.textContent.trim())));});}checkHealthComplete();}
-function checkHealthComplete(){document.getElementById("btn-health-next").disabled=!(state.mood&&state.health.length>0);}
+function pickQ(qi,ci,mood,el){
+  S.qans[qi]=ci;
+  if(!S.song) S.mood=mood;
+  var grid=el.parentNode;
+  grid.querySelectorAll(".pick").forEach(function(b){b.classList.remove("sel");});
+  el.classList.add("sel");
+  chkD();
+}
+function chkD(){
+  document.getElementById("btn-d").disabled=!(S.song && Object.keys(S.qans).length===sessQs.length);
+}
 
-// ── STEP 4 ────────────────────────────────────────────
-function showRecommendations(langChange){
-  if(!langChange){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("s4").classList.add("active");currentScreen=4;window.scrollTo(0,0);}
-  const recs=getRecommendations(MOOD_EN[state.mood]||state.mood,state.health);
-  document.getElementById("s4-title").textContent=(state.name?state.name+", ":"")+"இதோ உங்களுக்கான சாப்பாடு!";
-  document.getElementById("s4-sub").textContent=t("mood")+": "+state.mood+(state.health.length>0&&!state.health.includes("Normal / No Issues")?" · "+state.health.join(", "):"");
-  document.getElementById("food-list").innerHTML=recs.map(r=>`<div class="food-card"><div class="fc-info"><div class="fc-name">${r.name}</div><div class="fc-tamil">${r.tamil}</div><div class="fc-desc">${r.desc}</div><div class="fc-why"><strong>${t("why")}:</strong> ${r.reason}</div></div><div class="fc-btns btn-row"><a class="btn btn-swiggy" href="https://www.swiggy.com/search?query=${encodeURIComponent(r.name)}" target="_blank" rel="noopener"><span class="btn-badge">S</span>${t("swiggy")}</a><a class="btn btn-zomato" href="https://www.zomato.com/search?q=${encodeURIComponent(r.name)}" target="_blank" rel="noopener"><span class="btn-badge">Z</span>${t("zomato")}</a><a class="btn btn-whatsapp" href="https://wa.me/?text=${encodeURIComponent("🍽️ Mood & Food suggested *"+r.name+"* ("+r.tamil+") for my mood!\nMood: *"+state.mood+"*\nWhy: "+r.reason+"\n\nTry it! 😊")}" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>${t("whatsapp")}</a></div></div>`).join("");
+// =========================================================
+//  SCREEN 3 — HEALTH CHECK
+// =========================================================
+var MOOD_EN={"Happy":"Happy","Sad":"Sad","Angry":"Angry","Tired":"Tired","Excited":"Excited",
+  "மகிழ்ச்சி":"Happy","சோகம்":"Sad","கோபம்":"Angry","சோர்வு":"Tired","உற்சாகம்":"Excited"};
+var COND_EN={"Jaundice":"Jaundice","Diabetes":"Diabetes","Heart Problem":"Heart Problem","Infection":"Infection","Allergies":"Allergies","Normal / No Issues":"Normal / No Issues",
+  "மஞ்சள் காமாலை":"Jaundice","நீரிழிவு":"Diabetes","இதய பிரச்சனை":"Heart Problem","தொற்று":"Infection","ஒவ்வாமை":"Allergies","சாதாரண / பிரச்சனை இல்லை":"Normal / No Issues"};
+
+function condClean(c){ return c.replace(/[^\w /]/g,"").trim(); }
+function condKey(c){ var cl=condClean(c); return COND_EN[cl]||cl; }
+
+function renderS3(){
+  document.getElementById("s3-sub").textContent=tx("s3sub").replace("{m}",S.mood||"...");
+  var moods=tx("moodnames"), emojis=tx("moodemoji");
+  document.getElementById("mood-row").innerHTML=moods.map(function(m){
+    var en=MOOD_EN[m]||m;
+    return '<button class="mood-pill'+(MOOD_EN[S.mood]===en?" sel":"")+'" onclick="pickMood(\''+m+'\',this)">'+
+      '<span class="em">'+(emojis[m]||"😊")+'</span>'+m+'</button>';
+  }).join("");
+  var conds=tx("conds");
+  document.getElementById("health-chips").innerHTML=conds.map(function(c){
+    var k=condKey(c);
+    return '<button class="chip'+(S.health.indexOf(k)>-1?" sel":"")+'" onclick="toggleH(\''+c.replace(/'/g,"\\'")+'\',this)">'+c+'</button>';
+  }).join("");
+  chkH();
+}
+function pickMood(name,el){
+  S.mood=MOOD_EN[name]||name;
+  document.querySelectorAll(".mood-pill").forEach(function(b){b.classList.remove("sel");});
+  el.classList.add("sel");
+  chkH();
+}
+function toggleH(c,el){
+  var k=condKey(c);
+  if(k==="Normal / No Issues"){
+    S.health=["Normal / No Issues"];
+    document.querySelectorAll(".chip").forEach(function(b){b.classList.remove("sel");});
+    el.classList.add("sel");
+  } else {
+    S.health=S.health.filter(function(h){return h!=="Normal / No Issues";});
+    var idx=S.health.indexOf(k);
+    if(idx>-1) S.health.splice(idx,1); else S.health.push(k);
+    document.querySelectorAll(".chip").forEach(function(b){
+      b.classList.toggle("sel", S.health.indexOf(condKey(b.textContent.trim()))>-1);
+    });
+  }
+  chkH();
+}
+function chkH(){
+  document.getElementById("btn-h").disabled=!(S.mood && S.health.length>0);
+}
+
+// =========================================================
+//  SCREEN 4 — FOOD RECOMMENDATIONS
+// =========================================================
+function showFood(langOnly){
+  if(!langOnly){
+    document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+    document.getElementById("s4").classList.add("active");
+    curScreen=4; window.scrollTo(0,0);
+  }
+  var mood=MOOD_EN[S.mood]||S.mood;
+  var recs=getRecs(mood, S.health);
+  document.getElementById("s4-h").textContent=(S.name?S.name+", "+"":"")+"இதோ உங்களுக்கான சாப்பாடு!";
+  document.getElementById("s4-sub").textContent=
+    tx("moodlabel")+": "+S.mood+
+    (S.health.length>0&&S.health.indexOf("Normal / No Issues")<0?" · "+S.health.join(", "):"");
+  document.getElementById("food-list").innerHTML=recs.map(function(r){
+    var watext=encodeURIComponent("🍽️ Mood & Food suggested *"+r.n+"* ("+r.t+") for my mood!\nMood: *"+S.mood+"*\nWhy: "+r.r+"\n\nTry it! 😊");
+    return '<div class="fc">'+
+      '<div class="fc-info">'+
+        '<div class="fc-name">'+r.n+'</div>'+
+        '<div class="fc-tamil">'+r.t+'</div>'+
+        '<div class="fc-desc">'+r.d+'</div>'+
+        '<div class="fc-why"><strong>'+tx("whylabel")+':</strong> '+r.r+'</div>'+
+      '</div>'+
+      '<div class="fc-btns btn-stack">'+
+        '<a class="btn btn-swiggy" href="https://www.swiggy.com/search?query='+encodeURIComponent(r.n)+'" target="_blank"><span class="badge">S</span>'+tx("swiggy")+'</a>'+
+        '<a class="btn btn-zomato" href="https://www.zomato.com/search?q='+encodeURIComponent(r.n)+'" target="_blank"><span class="badge">Z</span>'+tx("zomato")+'</a>'+
+        '<a class="btn btn-whatsapp" href="https://wa.me/?text='+watext+'" target="_blank">'+
+          '<svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>'+
+          tx("wa")+'</a>'+
+      '</div>'+
+    '</div>';
+  }).join("");
   applyLang();
 }
 
-// ── RESTART ───────────────────────────────────────────
-function restart(){["inp-name","inp-age","inp-contact"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});document.getElementById("btn-profile-next").disabled=true;initSession();goto(1);}
+// =========================================================
+//  RESTART
+// =========================================================
+function restart(){
+  ["inp-name","inp-age","inp-contact"].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value="";
+  });
+  document.getElementById("btn-p").disabled=true;
+  initSess();
+  go(1);
+}
 
-// ── INIT ──────────────────────────────────────────────
-initSession();
+// =========================================================
+//  INIT
+// =========================================================
+initSess();
 </script>
 </body>
 </html>
