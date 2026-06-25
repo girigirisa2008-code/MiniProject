@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mood & Food — Food Recommendations</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #fff7f0 0%, #ffe8d6 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #1a1a1a;
+    }
+    .container { max-width: 600px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h1 { font-size: 24px; font-weight: 700; color: #e07020; }
+    .header .subtitle { font-size: 13px; color: #888; margin-top: 6px; }
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      border: 1px solid #ffe0c8;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .card-info { padding: 16px 16px 12px; }
+    .food-name { font-size: 18px; font-weight: 700; }
+    .food-tamil { font-size: 13px; font-weight: 600; color: #e07020; margin-top: 2px; }
+    .food-desc { font-size: 13px; color: #666; margin-top: 6px; line-height: 1.5; }
+    .food-why {
+      background: #fff4ec;
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #555;
+    }
+    .food-why strong { color: #e07020; }
+    .card-buttons { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+    .btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn:active { transform: scale(0.97); }
+    .btn-swiggy  { background: #FC8019; padding: 13px; }
+    .btn-zomato  { background: #E23744; padding: 13px; }
+    .btn-whatsapp { background: #25D366; padding: 10px; font-size: 13px; font-weight: 600; }
+    .btn-icon {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 900;
+    }
+    .btn-swiggy .btn-icon  { background:#fff; color:#FC8019; }
+    .btn-zomato .btn-icon  { background:#fff; color:#E23744; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>🍽️ இதோ உங்களுக்கான சாப்பாடு!</h1>
+    <div class="subtitle">Mood: <strong>Tired</strong> · Tap to order now</div>
+  </div>
+
+  <!-- Card 1 -->
+  <div class="card">
+    <div class="card-info">
+      <div class="food-name">Soft Idli with Sambar</div>
+      <div class="food-tamil">இட்லி சாம்பார்</div>
+      <div class="food-desc">Fluffy steamed rice cakes with lentil sambar — light and easy to digest.</div>
+      <div class="food-why"><strong>Why:</strong> Light on stomach, rich in carbs for quick energy when you're tired.</div>
+    </div>
+    <div class="card-buttons">
+      <a class="btn btn-swiggy" href="https://www.swiggy.com/search?query=Idli%20Sambar" target="_blank">
+        <span class="btn-icon">S</span> Order on Swiggy
+      </a>
+      <a class="btn btn-zomato" href="https://www.zomato.com/search?q=Idli%20Sambar" target="_blank">
+        <span class="btn-icon">Z</span> Order on Zomato
+      </a>
+      <a class="btn btn-whatsapp" href="https://wa.me/?text=🍽️ Mood %26 Food suggested Idli Sambar for my Tired mood! Try it 😊" target="_blank">
+        💬 Share on WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="card">
+    <div class="card-info">
+      <div class="food-name">Aval Upma</div>
+      <div class="food-tamil">அவல் உப்மா</div>
+      <div class="food-desc">Flattened rice with mustard, onion, and coconut — a quick, comforting Tamil snack.</div>
+      <div class="food-why"><strong>Why:</strong> High in iron, helps restore energy when you feel low.</div>
+    </div>
+    <div class="card-buttons">
+      <a class="btn btn-swiggy" href="https://www.swiggy.com/search?query=Aval%20Upma" target="_blank">
+        <span class="btn-icon">S</span> Order on Swiggy
+      </a>
+      <a class="btn btn-zomato" href="https://www.zomato.com/search?q=Aval%20Upma" target="_blank">
+        <span class="btn-icon">Z</span> Order on Zomato
+      </a>
+      <a class="btn btn-whatsapp" href="https://wa.me/?text=🍽️ Mood %26 Food suggested Aval Upma for my Tired mood! Try it 😊" target="_blank">
+        💬 Share on WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="card">
+    <div class="card-info">
+      <div class="food-name">Banana &amp; Dates Shake</div>
+      <div class="food-tamil">வாழைப்பழம் பேரீச்சம் மில்க் ஷேக்</div>
+      <div class="food-desc">Thick shake with banana, dates, and cold milk — naturally sweet and nourishing.</div>
+      <div class="food-why"><strong>Why:</strong> Natural sugars give instant energy without a crash.</div>
+    </div>
+    <div class="card-buttons">
+      <a class="btn btn-swiggy" href="https://www.swiggy.com/search?query=Banana%20Dates%20Shake" target="_blank">
+        <span class="btn-icon">S</span> Order on Swiggy
+      </a>
+      <a class="btn btn-zomato" href="https://www.zomato.com/search?q=Banana%20Dates%20Shake" target="_blank">
+        <span class="btn-icon">Z</span> Order on Zomato
+      </a>
+      <a class="btn btn-whatsapp" href="https://wa.me/?text=🍽️ Mood %26 Food suggested Banana Dates Shake for my Tired mood! Try it 😊" target="_blank">
+        💬 Share on WhatsApp
+      </a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
